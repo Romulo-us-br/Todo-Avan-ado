@@ -60,6 +60,8 @@ let oldInputValue;
 
             if(todoTitle.innerText === oldInputValue) {
                 todoTitle.innerText = text;
+
+                updateTodosLocalStorage(oldInputValue, text);
             }
         })
     }
@@ -121,6 +123,9 @@ document.addEventListener("click", (e) => {
 
     if(targetEl.classList.contains("finish-todo")){
         parentEl.classList.toggle("done");
+
+        updateTodosStatusLocalStorage(todoTitle);
+
     }
     if(targetEl.classList.contains("remove-todo")){
         parentEl.remove();
@@ -196,5 +201,22 @@ const loadTodos = () => {
     localStorage.setItem("todos",JSON.stringify(filteredTodos));
 
  }
+
+ const updateTodosStatusLocalStorage = (todoText) => {
+    const todos = getTodosLocalStorage();
+
+    todos.map((todo) => todo.text === todoText ? (todo.done = !todo.done) : null);
+
+    localStorage.setItem("todos",JSON.stringify(todos));
+ }
+
+ const updateTodosLocalStorage = (todoOldText, todoNewText) => {
+    const todos = getTodosLocalStorage();
+
+    todos.map((todo) => todo.text === todoOldText ? (todo.text = todoNewText) : null);
+
+    localStorage.setItem("todos",JSON.stringify(todos));
+ }
+
 
  loadTodos();
